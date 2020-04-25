@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  webui:
+    image: nginx:webui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webui
+    environment:
+      APISERVER_IP: 192.168.32.68
+      APISERVER_PORT: 12345
+    restart: always
+    ports:
+      - "80:80"
+
