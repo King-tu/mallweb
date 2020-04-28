@@ -8,13 +8,13 @@ import (
 
 func init() {
 	// 初始化日志库
-	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, "../tmp/log/mallweb.log")
+	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, "")
 }
 func main() {
 	r := router.InitRoutes()
 
 	//启动监听
-	if err := r.Run(); err != nil {
+	if err := r.Run(":8888"); err != nil {
 		zap.L().Fatal("HTTP Server启动失败", zap.Error(err))
 	}
 }
