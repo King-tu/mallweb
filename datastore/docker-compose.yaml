@@ -8,13 +8,9 @@ services:
       - .env
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    labels:
-      - "db.type=mysql"
-      - "version=5.7"
     restart: always
     ports:
       - "3306:3306"
-    privileged: true
     volumes:
       - "mysql_data:/var/lib/mysql"
     networks:
