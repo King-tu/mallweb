@@ -8,8 +8,10 @@ import (
 
 func init() {
 	// 初始化日志库
-	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, "")
+	logfile := "/tmp/log/mallweb/mallweb.log"
+	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, logfile)
 }
+
 func main() {
 	r := router.InitRoutes()
 
