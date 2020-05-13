@@ -19,7 +19,7 @@ func InitDB() *gorm.DB {
 		panic(err)
 	}
 
-	db.DB()
+	//db.DB()
 	db.LogMode(true)
 	err = db.DB().Ping()
 	if err != nil {
@@ -29,6 +29,8 @@ func InitDB() *gorm.DB {
 	db.DB().SetMaxIdleConns(conf.MySQL_MaxIdleConns)
 	db.DB().SetMaxOpenConns(conf.MySQL_MaxOpenConns)
 	db.DB().SetConnMaxLifetime(time.Second * conf.MySQL_ConnMaxLifetime)
+	// 表名使用单数（默认复数）
+	db.SingularTable(true)
 
 	return db
 }
