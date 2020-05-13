@@ -8,8 +8,6 @@ import (
 
 func init() {
 	db := database.InitDB()
-	// 表名使用单数（默认复数）
-	db.SingularTable(true)
 	// 自动迁移(创建)表
 	db.AutoMigrate(new(User), new(Address), new(Address), new(TpshopCategory), new(Goods), new(GoodsType),
 		new(Goods), new(GoodsType), new(GoodsSKU), new(GoodsImage),
