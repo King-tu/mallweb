@@ -56,7 +56,6 @@ import (
 	"crypto/sha1"
 	"crypto/x509"
 
-	//"github.com/dgrijalva/jwt-go"
 	"github.com/nfnt/resize"
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
@@ -92,17 +91,20 @@ func StringHashInt(str string) uint32 {
 	return h.Sum32()
 }
 
-func HashPassword(password []byte) ([]byte, error) {
-	return bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+func HashPassword(password string) (string, error) {
+	pwd, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(pwd), nil
 }
 
 func VerifyPassword(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-
 	if err != nil {
+		zap.L().Error("CompareHashAndPassword err", zap.Error(err))
 		return false
 	}
-
 	return true
 }
 
@@ -132,26 +134,6 @@ func Contains(obj interface{}, target interface{}) bool {
 	return false
 }
 
-// TODO
-//func GenerateAccessToken(claims map[string]interface{}, expires int64, expUnit, secrect string) (string, *errors.APIError) {
-//	now := time.Now()
-//	token := jwt.New(jwt.SigningMethodHS256)
-//	unit := GetDuration(expUnit)
-//	expiresAt := now.Add(unit * time.Duration(expires))
-//	token.Claims["exp"] = expiresAt.Unix()
-//	for k, v := range claims {
-//		token.Claims[k] = v
-//	}
-//
-//	accessToken, tokenErr := token.SignedString([]byte(secrect))
-//	zap.L().Sugar().Infof("The access token is %s", accessToken)
-//	if tokenErr != nil {
-//		zap.L().Error("The error during generating access token is ", zap.Error(tokenErr))
-//		return "", errors.ErrTokenGenErr
-//	}
-//	return accessToken, nil
-//}
-
 func ValidateMobileNumber(mobile string) *errors.APIError {
 	mobilePatten := "^(1)[1-9]\\d{9}$"
 	matched, err := regexp.MatchString(mobilePatten, mobile)
@@ -160,6 +142,20 @@ func ValidateMobileNumber(mobile string) *errors.APIError {
 	}
 	if !matched {
 		return errors.ErrMobileNumberIncorrect
+	}
+
+	return nil
+}
+
+func ValidatePassword(passwd string) error {
+	// 要求：由数字和字母组成，并且要同时含有数字和字母，且长度要在8-16位之间。
+	mobilePatten := "[0-9A-Za-z]{6,16}"
+	matched, err := regexp.MatchString(mobilePatten, passwd)
+	if err != nil {
+		return errors.ErrGeneralInternalFault
+	}
+	if !matched {
+		return se.New("密码格式不正确: 由数字和字母的一种或两种组成, 密码长度要在8-16位之间")
 	}
 
 	return nil
@@ -1896,7 +1892,6 @@ func SendSms(phoneNum, msg string) error {
 	//"code" 为短信模版中的 变量
 	request.QueryParams["TemplateParam"] = `{"code":` + msg + `}`
 	//发送
-	//response, err := client.ProcessCommonRequest(request)
 	if _, err := client.ProcessCommonRequest(request); err != nil {
 		return err
 	}
@@ -1904,14 +1899,14 @@ func SendSms(phoneNum, msg string) error {
 	return nil
 }
 
-func GetGRPCService() service.Service {
+func GetGRPCService(srvName string) service.Service {
 	//配置注册中心
 	etcdRegistry := etcd.NewRegistry(func(options *registry.Options) {
 		options.Addrs = []string{conf.ETCD_ADDR}
 	})
 
 	return grpc.NewService(
-		service.Name(common.SRV_NAME_SMS),
+		service.Name(srvName),
 		service.Version(conf.Version),
 		service.Registry(etcdRegistry),
 		//TTL指定一次注册在注册中心的有效期，过期后便删除

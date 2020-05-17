@@ -7,6 +7,11 @@ var (
 	Version = "0.1.0"
 	// 日志
 	LogFileName = "/tmp/log/mallweb/mallweb.log"
+
+	// token 过期时间
+	TOKEN_EXPIRES_TIME = 3 * time.Hour
+	// token 密钥
+	TOKEN_SECRECT = "secrect"
 )
 
 //设置了30秒的TTL生存期，并设置了每15秒一次的重注册。

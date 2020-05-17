@@ -4,11 +4,12 @@ go 1.14
 
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v0.0.0-20190808125512-07798873deee
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/zap v0.0.1
 	github.com/gin-gonic/gin v1.6.2
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/protobuf v1.4.1
+	github.com/golang/protobuf v1.4.2
 	github.com/gomodule/redigo/redis v0.0.0-20200429221454-e14091dffc1b
 	github.com/grpc-ecosystem/grpc-gateway v1.14.4
 	github.com/jinzhu/gorm v1.9.12
@@ -23,7 +24,7 @@ require (
 	golang.org/x/net v0.0.0-20200505041828-1ed23360d12c
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
 	google.golang.org/genproto v0.0.0-20191216164720-4f79533eabd1
-	google.golang.org/protobuf v1.22.0
+	google.golang.org/protobuf v1.23.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )
 
