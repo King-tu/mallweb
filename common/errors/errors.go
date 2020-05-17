@@ -269,6 +269,7 @@ var (
 	ErrImportJobInRun = NewAPIError(http.StatusForbidden, "IMPORT_JOB_IN_RUN", "导入job正在运行中")
 
 	ErrImageFileInvalid = NewAPIError(http.StatusBadRequest, "IMAGE_FILE_INVALID", "图片文件无效")
+
 	ErrTxHandlerRequire = NewAPIError(http.StatusInternalServerError, "TX_HANDLER_REQUIRE", "没有提供事物处理器")
 
 	ErrTulingParseFault = NewAPIError(http.StatusInternalServerError, "ERR_TULING_PARSE_FAULT", "图灵机器人解析失败")
@@ -280,6 +281,16 @@ var (
 	ErrDataFormatUnsupport = NewAPIError(http.StatusBadRequest, "ERR_DATA_FORMAT_UNSUPPORT", "数据格式不支持")
 
 	ErrRefreshNotExpires = NewAPIError(http.StatusBadRequest, "REFRESH_TIME_NOT_EXPIRES", "验证码还在有效期内")
+
+	ErrSmsCodeNotFound = NewAPIError(http.StatusNotFound, "SMS_CODE_NOT_FOUND", "验证码不存在")
+
+	ErrSmsCodeExpires = NewAPIError(http.StatusBadRequest, "SMS_CODE_EXPIRE", "验证码已过期")
+
+	ErrSmsCodeIncorrect = NewAPIError(http.StatusBadRequest, "SMS_CODE_INCORRECT", "验证码输入错误")
+
+	ErrPasswdIncorrect = NewAPIError(http.StatusBadRequest, "PASSWD_FORMAT_INCORRECT", "密码格式不正确: 要求同时含有数字和字母，且长度要在8-16位之间")
+
+	ErrMobileNumberAlreadyRegistered = NewAPIError(http.StatusBadRequest, "MOBILE_NUMBER_ALREADY_REGISTERED", "手机号码已注册")
 )
 
 func (e *APIError) Response() gin.H {
