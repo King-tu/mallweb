@@ -1,10 +1,8 @@
 package redis
 
 import (
-	"encoding/json"
 	"github.com/gomodule/redigo/redis"
 	"github.com/king-tu/mallweb/common/conf"
-	"go.uber.org/zap"
 	"time"
 )
 
@@ -28,25 +26,26 @@ func init() {
 			return err
 		},
 	}
-	zap.L().Debug("初始化redis连接池成功")
 }
 
 // Set a key/value
-func Set(key string, data interface{}, time int) error {
+func Set(key string, value interface{}) error {
 	conn := redisConn.Get()
 	defer conn.Close()
 
-	value, err := json.Marshal(data)
+	_, err := conn.Do("SET", key, value)
 	if err != nil {
 		return err
 	}
 
-	_, err = conn.Do("SET", key, value)
-	if err != nil {
-		return err
-	}
-	// 设置key的有效期，time要求int类型
-	_, err = conn.Do("EXPIRE", key, time)
+	return nil
+}
+
+func Setex(key string, value interface{}, time int) error {
+	conn := redisConn.Get()
+	defer conn.Close()
+
+	_, err := conn.Do("setex", key, time, value)
 	if err != nil {
 		return err
 	}
@@ -68,13 +67,13 @@ func Exists(key string) bool {
 }
 
 // Get get a key
-func Get(key string) ([]byte, error) {
+func Get(key string) (string, error) {
 	conn := redisConn.Get()
 	defer conn.Close()
 
-	reply, err := redis.Bytes(conn.Do("GET", key))
+	reply, err := redis.String(conn.Do("GET", key))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	return reply, nil
