@@ -43,6 +43,7 @@ const (
 	// srv begin
 	SRV_NAME_DISTID          = "cn.com.kingtu.srv.distid"
 	SRV_NAME_SMS             = "cn.com.kingtu.srv.sms"
+	SRV_NAME_CUSTOMER        = "cn.com.kingtu.srv.customer"
 	SRV_NAME_UAA             = "cn.com.kingtu.srv.uaa"
 	SRV_NAME_FORMMETA        = "cn.com.kingtu.srv.formmeta"
 	SRV_NAME_CRM             = "cn.com.kingtu.srv.crm"
