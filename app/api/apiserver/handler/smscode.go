@@ -46,7 +46,3 @@ func SendSmsCode(c *gin.Context) {
 	// Return the normal response
 	c.String(http.StatusNoContent, "")
 }
-
-func HandleRester(c *gin.Context) {
-
-}

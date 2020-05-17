@@ -51,6 +51,13 @@ func NewSmsCodeServiceEndpoints() []*api.Endpoint {
 // Client API for SmsCodeService service
 
 type SmsCodeService interface {
+	// Summary:发送短信验证码
+	//
+	// @Success 204 {object} SendSmsRequest
+	//
+	// @Failure 500 {object} SendSmsResponse
+	//
+	// test
 	SendSmsCode(ctx context.Context, in *SendSmsRequest, opts ...client.CallOption) (*SendSmsResponse, error)
 }
 
@@ -79,6 +86,13 @@ func (c *smsCodeService) SendSmsCode(ctx context.Context, in *SendSmsRequest, op
 // Server API for SmsCodeService service
 
 type SmsCodeServiceHandler interface {
+	// Summary:发送短信验证码
+	//
+	// @Success 204 {object} SendSmsRequest
+	//
+	// @Failure 500 {object} SendSmsResponse
+	//
+	// test
 	SendSmsCode(context.Context, *SendSmsRequest, *SendSmsResponse) error
 }
 

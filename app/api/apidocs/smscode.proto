@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package smscode;
+package apidocs;
 
 import "google/api/annotations.proto";
 
-option go_package = "../smscode";
+option go_package = "../apidocs";
 
 message SendSmsRequest {
     string mobile = 1;
@@ -14,13 +14,7 @@ message SendSmsResponse {
 }
 
 service SmsCodeService {
-    // Summary:发送短信验证码
-    //
-    // @Success 204 {object} SendSmsRequest
-    //
-    // @Failure 500 {object} SendSmsResponse
-    //
-    // test
+    // 发送短信验证码
     rpc SendSmsCode (SendSmsRequest) returns (SendSmsResponse) {
         option (google.api.http) = {
             post: "/api/v1/smscode"

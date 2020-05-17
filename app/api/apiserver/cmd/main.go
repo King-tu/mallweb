@@ -4,6 +4,7 @@ import (
 	"github.com/king-tu/mallweb/app/api/apiserver/handler"
 	"github.com/king-tu/mallweb/app/api/apiserver/router"
 	"github.com/king-tu/mallweb/app/log"
+	"github.com/king-tu/mallweb/common"
 
 	"github.com/king-tu/mallweb/common/conf"
 	"github.com/king-tu/mallweb/common/utils"
@@ -16,12 +17,15 @@ func init() {
 }
 
 func main() {
-	grpcService := utils.GetGRPCService()
+	smsSrv := utils.GetGRPCService(common.SRV_NAME_SMS)
+	customerSrv := utils.GetGRPCService(common.SRV_NAME_CUSTOMER)
 
 	// Initialise service
-	grpcService.Init()
+	smsSrv.Init()
+	customerSrv.Init()
 
-	handler.RegisterClients(grpcService.Client())
+	handler.RegisterClients(smsSrv.Client())
+	handler.RegisterClients(customerSrv.Client())
 
 	r := router.InitRouter()
 	//启动监听

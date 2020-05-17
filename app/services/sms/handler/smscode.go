@@ -24,13 +24,13 @@ func (e *SmsCodeService) SendSmsCode(ctx context.Context, req *smscode.SendSmsRe
 	zap.L().Sugar().Debugf("请求的手机号码：%s， 生成的验证码：%s", req.Mobile, code)
 
 	//发送短信验证码（阿里云接口）
-	if err := utils.SendSms(req.Mobile, code); err != nil {
-		zap.L().Error("短信验证码发送失败!", zap.Error(err))
-		return err
-	}
+	//if err := utils.SendSms(req.Mobile, code); err != nil {
+	//	zap.L().Error("短信验证码发送失败!", zap.Error(err))
+	//	return err
+	//}
 
 	//短信验证码发送成功，保存短信验证码到redis
-	if err := redis.Set(common.PROJECT_NAME+"_"+common.SMSCODE_GRANT+"_"+req.Mobile, code, common.SMSCODE_EXPIRATION); err != nil {
+	if err := redis.Setex(common.PROJECT_NAME+"_"+common.SMSCODE_GRANT+"_"+req.Mobile, code, common.SMSCODE_EXPIRATION); err != nil {
 		zap.L().Error("短信验证码缓存失败!", zap.Error(err))
 		return err
 	}

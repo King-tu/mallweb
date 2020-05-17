@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/king-tu/mallweb/app/log"
-	"github.com/king-tu/mallweb/app/services/sms/handler"
-	. "github.com/king-tu/mallweb/app/services/sms/proto/smscode"
+	"github.com/king-tu/mallweb/app/services/customer/handler"
+	. "github.com/king-tu/mallweb/app/services/customer/proto/customer"
 	"github.com/king-tu/mallweb/common"
 	"github.com/king-tu/mallweb/common/conf"
 	"github.com/king-tu/mallweb/common/utils"
@@ -16,18 +16,18 @@ func init() {
 }
 
 func main() {
-	smsSrv := utils.GetGRPCService(common.SRV_NAME_SMS)
+	customerSrv := utils.GetGRPCService(common.SRV_NAME_CUSTOMER)
 
 	// Initialise service
-	smsSrv.Init()
+	customerSrv.Init()
 
 	// Register Handler
-	if err := RegisterSmsCodeServiceHandler(smsSrv.Server(), handler.NewSmsCodeService()); err != nil {
+	if err := RegisterCustomerServiceHandler(customerSrv.Server(), handler.NewRegisterService()); err != nil {
 		zap.L().Error("Fail to run  register SmsCodeService", zap.Error(err))
 	}
 
 	// Run service
-	if err := smsSrv.Run(); err != nil {
+	if err := customerSrv.Run(); err != nil {
 		zap.L().Fatal("Fail to run service ", zap.Error(err))
 	}
 }

@@ -13,14 +13,13 @@
   "paths": {
     "/api/v1/smscode": {
       "post": {
-        "summary": "Summary:发送短信验证码",
-        "description": "@Success 204 {object} SendSmsRequest\n\n@Failure 500 {object} SendSmsResponse\n\ntest",
+        "summary": "发送短信验证码",
         "operationId": "SmsCodeService_SendSmsCode",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/smscodeSendSmsResponse"
+              "$ref": "#/definitions/apidocsSendSmsResponse"
             }
           },
           "default": {
@@ -36,7 +35,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/smscodeSendSmsRequest"
+              "$ref": "#/definitions/apidocsSendSmsRequest"
             }
           }
         ],
@@ -47,6 +46,17 @@
     }
   },
   "definitions": {
+    "apidocsSendSmsRequest": {
+      "type": "object",
+      "properties": {
+        "mobile": {
+          "type": "string"
+        }
+      }
+    },
+    "apidocsSendSmsResponse": {
+      "type": "object"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -79,17 +89,6 @@
           }
         }
       }
-    },
-    "smscodeSendSmsRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        }
-      }
-    },
-    "smscodeSendSmsResponse": {
-      "type": "object"
     }
   }
 }

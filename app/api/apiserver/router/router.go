@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/king-tu/mallweb/app/api/apiserver/handler"
+	"github.com/king-tu/mallweb/common/middlewares"
 	"go.uber.org/zap"
 	"time"
 )
@@ -21,9 +22,18 @@ func InitRouter() *gin.Engine {
 		g.POST("/smscode", handler.SendSmsCode)
 
 		/******* 用户相关的服务 *******/
+		// 检查手机号(用户名)是否已注册
+		g.POST("/user/checkMobile", handler.CheckMobile)
 		// 注册
-		g.POST("/user/register", handler.HandleRester)
+		g.POST("/user/register", handler.Register)
 		// 登录
+		g.POST("/user/login", handler.Login)
+
+		g.Use(middlewares.Auth())
+
+		g.GET("/hello", func(c *gin.Context) {
+			c.JSON(200, "hello world !!!")
+		})
 
 		/******* 商品服务 *******/
 
