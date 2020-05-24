@@ -18,6 +18,8 @@ import (
 	"github.com/micro/go-micro/v2/registry/etcd"
 	"github.com/micro/go-micro/v2/service"
 	"github.com/micro/go-micro/v2/service/grpc"
+	ocplugin "github.com/micro/go-plugins/wrapper/trace/opentracing/v2"
+	"github.com/opentracing/opentracing-go"
 	"image"
 	"image/color"
 	"image/draw"
@@ -1900,7 +1902,7 @@ func SendSms(phoneNum, msg string) error {
 }
 
 func GetGRPCService(srvName string) service.Service {
-	//配置注册中心
+	// 配置注册中心
 	etcdRegistry := etcd.NewRegistry(func(options *registry.Options) {
 		options.Addrs = []string{conf.ETCD_ADDR}
 	})
@@ -1913,6 +1915,7 @@ func GetGRPCService(srvName string) service.Service {
 		service.RegisterTTL(conf.RegisterTTLSec),
 		//间隔时间注册则是定时向注册中心重新注册以保证服务仍在线
 		service.RegisterInterval(conf.RegisterIntervalSec),
+		service.WrapHandler(ocplugin.NewHandlerWrapper(opentracing.GlobalTracer())),
 	)
 }
 

@@ -928,4 +928,5 @@ const (
 
 const (
 	PROJECT_NAME = "MallWeb"
+	JAEGER_ADDR  = "localhost:6831"
 )

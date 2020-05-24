@@ -7,6 +7,11 @@ import (
 	"github.com/king-tu/mallweb/common"
 	"github.com/king-tu/mallweb/common/conf"
 	"github.com/king-tu/mallweb/common/utils"
+	"github.com/opentracing/opentracing-go"
+
+	//"github.com/micro/go-micro/v2/service"
+	//ocplugin "github.com/micro/go-plugins/wrapper/trace/opentracing/v2"
+	//"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 )
 
@@ -16,8 +21,16 @@ func init() {
 }
 
 func main() {
-	smsSrv := utils.GetGRPCService(common.SRV_NAME_SMS)
+	// new tracer
+	tracer, closer, err := utils.NewTracer(common.SRV_NAME_SMS, common.JAEGER_ADDR)
+	if err != nil {
+		zap.L().Sugar().Fatalf("unable to create tracer: %+v\n", err)
+	}
+	defer closer.Close()
+	opentracing.SetGlobalTracer(tracer)
 
+	// new service
+	smsSrv := utils.GetGRPCService(common.SRV_NAME_SMS)
 	// Initialise service
 	smsSrv.Init()
 
