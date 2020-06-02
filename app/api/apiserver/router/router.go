@@ -16,6 +16,7 @@ func InitRouter() *gin.Engine {
 	engine.Use(ginzap.RecoveryWithZap(zap.L(), true))
 
 	g := engine.Group("/api/v1")
+	g.Use(middlewares.TracerWrapper)
 	{
 		/******* 短信服务 *******/
 		// 短信验证码

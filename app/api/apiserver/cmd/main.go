@@ -13,14 +13,14 @@ import (
 
 func init() {
 	// 初始化日志库
-	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, conf.LogFileName)
+	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, conf.LogFileName, common.SRV_NAME_APIGATEWAY)
 }
 
 func main() {
 	// new tracer
-	tracer, io, err := utils.NewTracer(common.SRV_NAME_SMS, common.JAEGER_ADDR)
+	tracer, io, err := utils.NewTracer(common.SRV_NAME_APIGATEWAY, common.JAEGER_ADDR)
 	if err != nil {
-		zap.L().Sugar().Fatalf("unable to create tracer: %+v\n", err)
+		log.L().Bg().Fatal("unable to create tracer", zap.Error(err))
 	}
 	defer io.Close()
 	opentracing.SetGlobalTracer(tracer)
@@ -36,8 +36,9 @@ func main() {
 
 	// Init router
 	r := router.InitRouter()
+
 	// run
 	if err := r.Run(":8888"); err != nil {
-		zap.L().Fatal("HTTP Server启动失败", zap.Error(err))
+		log.L().Bg().Fatal("HTTP Server启动失败", zap.Error(err))
 	}
 }

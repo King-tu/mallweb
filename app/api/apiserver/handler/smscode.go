@@ -2,9 +2,11 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/king-tu/mallweb/app/log"
 	"github.com/king-tu/mallweb/app/services/sms/proto/smscode"
 	"github.com/king-tu/mallweb/common"
 	"github.com/king-tu/mallweb/common/errors"
+	"github.com/king-tu/mallweb/common/middlewares"
 	"github.com/king-tu/mallweb/common/redis"
 	"github.com/king-tu/mallweb/common/utils"
 	microErrors "github.com/micro/go-micro/v2/errors"
@@ -35,10 +37,15 @@ func SendSmsCode(c *gin.Context) {
 		return
 	}
 
-	_, err := smscodeServiceClient.SendSmsCode(c, &req)
+	ctx, ok := middlewares.ContextWithSpan(c)
+	if ok == false {
+		zap.L().Debug("get context err")
+	}
+
+	_, err := smscodeServiceClient.SendSmsCode(ctx, &req)
 	if err != nil {
 		e := microErrors.FromError(err)
-		zap.L().Error("SendSmsCode服务调用出错", zap.String("error", e.Detail))
+		log.L().For(ctx).Error(false, "SendSmsCode服务调用出错", zap.String("error", e.Detail))
 		utils.AbortWithError(c, errors.ConvertFrom(e.Detail))
 		return
 	}

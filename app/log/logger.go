@@ -7,8 +7,55 @@ import (
 	"os"
 )
 
+var (
+	_globalL Factory
+)
+
+func L() Factory {
+	return _globalL
+}
+
+// Logger is a simplified abstraction of the zap.Logger
+type Logger interface {
+	Info(msg string, fields ...zapcore.Field)
+	Debug(msg string, fields ...zapcore.Field)
+	Error(logToSpan bool, msg string, fields ...zapcore.Field)
+	Fatal(msg string, fields ...zapcore.Field)
+	With(fields ...zapcore.Field) Logger
+}
+
+// logger delegates all calls to the underlying zap.Logger
+type logger struct {
+	logger *zap.Logger
+}
+
+// Info logs an info msg with fields
+func (l logger) Info(msg string, fields ...zapcore.Field) {
+	l.logger.Info(msg, fields...)
+}
+
+// Debug logs an debug msg with fields
+func (l logger) Debug(msg string, fields ...zapcore.Field) {
+	l.logger.Debug(msg, fields...)
+}
+
+// Error logs an error msg with fields
+func (l logger) Error(logToSpan bool, msg string, fields ...zapcore.Field) {
+	l.logger.Error(msg, fields...)
+}
+
+// Fatal logs a fatal error msg with fields
+func (l logger) Fatal(msg string, fields ...zapcore.Field) {
+	l.logger.Fatal(msg, fields...)
+}
+
+// With creates a child logger, and optionally adds some context fields to that logger.
+func (l logger) With(fields ...zapcore.Field) Logger {
+	return logger{logger: l.logger.With(fields...)}
+}
+
 // 设置日志级别、输出格式和日志文件的路径
-func SetLogs(logLevel zapcore.Level, logFormat, fileName string) {
+func SetLogs(logLevel zapcore.Level, logFormat, fileName, srvName string) {
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        TIME_KEY,
@@ -44,9 +91,9 @@ func SetLogs(logLevel zapcore.Level, logFormat, fileName string) {
 	}
 
 	core := zapcore.NewCore(
-		encoder,                                                                         // 编码器配置
+		encoder, // 编码器配置
 		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stderr), zapcore.AddSync(&hook)), // 打印到控制台和文件
-		zap.NewAtomicLevelAt(logLevel),                                                  // 日志级别
+		zap.NewAtomicLevelAt(logLevel), // 日志级别
 	)
 
 	// 开启文件及行号
@@ -57,4 +104,6 @@ func SetLogs(logLevel zapcore.Level, logFormat, fileName string) {
 	logger := zap.New(core, caller, development)
 
 	zap.ReplaceGlobals(logger)
+
+	_globalL = NewFactory(zap.L().With(zap.String("service", srvName)))
 }

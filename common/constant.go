@@ -41,6 +41,8 @@ const (
 	BASE64_TABLE = "123QRSTUabcdVWXYZHijKLAWDCABDstEFGuvwxyzGHIJklmnopqr23456017krhr"
 
 	// srv begin
+
+	SRV_NAME_APIGATEWAY      = "API Gateway"
 	SRV_NAME_DISTID          = "cn.com.kingtu.srv.distid"
 	SRV_NAME_SMS             = "cn.com.kingtu.srv.sms"
 	SRV_NAME_CUSTOMER        = "cn.com.kingtu.srv.customer"

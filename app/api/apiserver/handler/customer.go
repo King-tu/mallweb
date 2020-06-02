@@ -6,6 +6,7 @@ import (
 	"github.com/king-tu/mallweb/app/services/customer/proto/customer"
 	"github.com/king-tu/mallweb/common"
 	"github.com/king-tu/mallweb/common/errors"
+	"github.com/king-tu/mallweb/common/middlewares"
 	"github.com/king-tu/mallweb/common/redis"
 	"github.com/king-tu/mallweb/common/utils"
 	microErrors "github.com/micro/go-micro/v2/errors"
@@ -72,7 +73,12 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	_, err = customerServiceClient.Register(c, &req)
+	ctx, ok := middlewares.ContextWithSpan(c)
+	if ok == false {
+		zap.L().Debug("get context err")
+	}
+
+	_, err = customerServiceClient.Register(ctx, &req)
 	if err != nil {
 		e := microErrors.FromError(err)
 		zap.L().Error("Register服务调用出错", zap.String("error", e.Detail))
@@ -98,7 +104,12 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	resp, err := customerServiceClient.Login(c, &req)
+	ctx, ok := middlewares.ContextWithSpan(c)
+	if ok == false {
+		zap.L().Debug("get context err")
+	}
+
+	resp, err := customerServiceClient.Login(ctx, &req)
 	if err != nil {
 		e := microErrors.FromError(err)
 		zap.L().Error("Register服务调用出错", zap.String("error", e.Detail))

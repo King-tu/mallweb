@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"github.com/king-tu/mallweb/app/log"
 	"github.com/king-tu/mallweb/app/models"
 	"github.com/king-tu/mallweb/app/services/customer/proto/customer"
 	"github.com/king-tu/mallweb/common/conf"
@@ -12,13 +13,14 @@ import (
 
 type CustomerService struct{}
 
-func NewRegisterService() *CustomerService {
+func NewCustomerService() *CustomerService {
 	return &CustomerService{}
 }
 
 func (e *CustomerService) Register(ctx context.Context, req *customer.RegisterRequest, resp *customer.RegisterResponse) error {
 	hashPwd, err := utils.HashPassword(req.Passwd)
 	if err != nil {
+		log.L().For(ctx).Error(true, "计算密码的hash值出错", zap.Error(err))
 		return err
 	}
 
@@ -28,7 +30,7 @@ func (e *CustomerService) Register(ctx context.Context, req *customer.RegisterRe
 	user.PassWord = hashPwd
 
 	if err := user.Add(); err != nil {
-		zap.L().Error("添加用户失败", zap.Error(err))
+		log.L().For(ctx).Error(true, "添加用户失败", zap.Error(err))
 		return err
 	}
 
@@ -42,17 +44,19 @@ func (e *CustomerService) Login(ctx context.Context, req *customer.LoginRequest,
 	user.Name = req.Mobile
 
 	if err := user.Get(); err != nil {
-		zap.L().Error("获取用户失败", zap.Error(err))
+		log.L().For(ctx).Error(true, "获取用户失败", zap.Error(err))
 		return err
 	}
 
 	if !utils.VerifyPassword(req.Passwd, user.PassWord) {
+		log.L().For(ctx).Error(true, "用户名与密码不匹配")
 		return errors.New("用户名与密码不匹配")
 	}
 
 	// jwt
 	token, err := utils.GenerateToken(user, conf.TOKEN_EXPIRES_TIME, conf.TOKEN_SECRECT)
 	if err != nil {
+		log.L().For(ctx).Error(true, "生成token失败", zap.Error(err))
 		return err
 	}
 

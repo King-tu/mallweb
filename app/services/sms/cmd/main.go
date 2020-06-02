@@ -17,7 +17,7 @@ import (
 
 func init() {
 	// 初始化日志库
-	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, conf.LogFileName)
+	log.SetLogs(zap.DebugLevel, log.LOGFORMAT_CONSOLE, conf.LogFileName, common.SRV_NAME_SMS)
 }
 
 func main() {
