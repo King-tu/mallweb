@@ -6,6 +6,7 @@ require (
 	github.com/aliyun/alibaba-cloud-sdk-go v0.0.0-20190808125512-07798873deee
 	github.com/coreos/etcd v3.3.21+incompatible // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gin-contrib/zap v0.0.1
 	github.com/gin-gonic/gin v1.6.2
 	github.com/go-log/log v0.2.0 // indirect
@@ -33,6 +34,7 @@ require (
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pelletier/go-toml v1.7.0 // indirect
 	github.com/satori/go.uuid v1.2.0
+	github.com/spf13/viper v1.7.0
 	github.com/uber/jaeger-client-go v2.23.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	go.uber.org/zap v1.15.0

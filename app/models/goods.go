@@ -78,9 +78,3 @@ type TpshopCategory struct {
 	UpdateTime int    `gorm:"null"`
 	DeleteTime int    `gorm:"null"`
 }
-
-func init() {
-	// 自动迁移(创建)表
-	DB().AutoMigrate(new(Goods), new(GoodsType), new(GoodsSKU), new(GoodsImage),
-		new(IndexGoodsBanner), new(IndexTypeGoodsBanner), new(IndexPromotionBanner), new(TpshopCategory))
-}

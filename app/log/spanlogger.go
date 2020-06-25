@@ -40,10 +40,12 @@ func (sl spanLogger) Debug(msg string, fields ...zapcore.Field) {
 	sl.logger.Info(msg, fields...)
 }
 
-func (sl spanLogger) Error(logToSpan bool, msg string, fields ...zapcore.Field) {
+func (sl spanLogger) Error(setErrFlag bool, msg string, fields ...zapcore.Field) {
 	sl.logToSpan("error", msg, fields...)
-	// 由调用者决定是否打印到span
-	ext.Error.Set(sl.span, logToSpan)
+	// 由调用者决定是否设置错误警告到span
+	if setErrFlag {
+		ext.Error.Set(sl.span, setErrFlag)
+	}
 	sl.logger.Error(msg, fields...)
 }
 

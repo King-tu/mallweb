@@ -24,11 +24,6 @@ type Address struct {
 	OrderInfo []*OrderInfo
 }
 
-func init() {
-	// 自动迁移(创建)表
-	DB().AutoMigrate(new(User), new(Address))
-}
-
 func (user *User) Add() error {
 	return DB().Create(user).Error
 }

@@ -27,8 +27,3 @@ type OrderGoods struct { //订单商品表
 	Price       int    //商品价格
 	Comment     string `gorm:"default('')"` //评论
 }
-
-func init() {
-	// 自动迁移(创建)表
-	DB().AutoMigrate(new(OrderInfo), new(OrderGoods))
-}

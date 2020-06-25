@@ -17,4 +17,7 @@
 # IDE缓存文件
 *.idea
 
+# 配置文件
+app/config.yaml
+
 

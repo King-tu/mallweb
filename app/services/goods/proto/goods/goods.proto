@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package goods;
+
+import "google/api/annotations.proto";
+
+option go_package = "../goods";
+
+service GoodsService {
+    // 用户登录
+    rpc IndexMenus (IndexMenusRequest) returns (IndexMenusResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/user/indexMenus"
+            body: "*"
+        };
+    }
+}
+
+message IndexMenusRequest {
+}
+
+message IndexMenusResponse {
+    repeated string items = 1;
+    map<string, interface> filter = 3;
+}
+
+
