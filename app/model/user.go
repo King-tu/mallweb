@@ -1,6 +1,4 @@
-package models
-
-import "github.com/jinzhu/gorm"
+package model
 
 type User struct {
 	Id        int
@@ -22,30 +20,4 @@ type Address struct {
 	Isdefault bool   `gorm:"defalt(false)"` //是否默认 0 为非默认  1为默认
 	UserID    int
 	OrderInfo []*OrderInfo
-}
-
-func (user *User) Add() error {
-	return DB().Create(user).Error
-}
-
-func (user *User) Get() error {
-	err := db.Where("name = ?", user.Name).First(user).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (user *User) Exists() (bool, error) {
-	// Select，指定你想从数据库中检索出的字段，默认会选择全部字段。
-	err := DB().Select("id").Where("name = ? ", user.Name).First(user).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return false, err
-	}
-
-	if user.Id > 0 {
-		return true, nil
-	}
-	return false, nil
 }

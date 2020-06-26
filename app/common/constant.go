@@ -22,6 +22,7 @@ const (
 	SRV_NAME_DISTID     = "cn.com.kingtu.srv.distid"
 	SRV_NAME_SMS        = "cn.com.kingtu.srv.sms"
 	SRV_NAME_CUSTOMER   = "cn.com.kingtu.srv.customer"
+	SRV_NAME_GOODS      = "cn.com.kingtu.srv.goods"
 	// srv end
 
 	SMSCODE_GRANT = "smscode"

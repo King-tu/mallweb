@@ -2,13 +2,14 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/king-tu/mallweb/app/common"
 	"github.com/king-tu/mallweb/app/common/errors"
 	"github.com/king-tu/mallweb/app/common/middlewares"
 	"github.com/king-tu/mallweb/app/common/redis"
 	"github.com/king-tu/mallweb/app/common/utils"
 	"github.com/king-tu/mallweb/app/global"
-	"github.com/king-tu/mallweb/app/models"
+	"github.com/king-tu/mallweb/app/model"
 	"github.com/king-tu/mallweb/app/services/customer/proto/customer"
 	"go.uber.org/zap"
 	"net/http"
@@ -22,20 +23,22 @@ func CheckMobile(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Name: req.Mobile}
+	user := model.User{Name: req.Mobile}
 
-	exists, err := user.Exists()
-	if err != nil {
+	// Select，指定你想从数据库中检索出的字段，默认会选择全部字段。
+	err := global.DB.Select("id").Where("name = ? ", user.Name).First(user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
 		global.Logger.Bg().Error(false, "查询用户失败", zap.Error(err))
 		utils.AbortWithError(c, errors.ErrGeneralInternalFault)
 		return
 	}
-	if exists {
+	// 已存在
+	if user.Id > 0 {
 		utils.AbortWithError(c, errors.ErrMobileNumberAlreadyRegistered)
 		return
 	}
 
-	c.JSON(http.StatusNoContent, "")
+	c.JSON(http.StatusNoContent, "false")
 }
 
 func Register(c *gin.Context) {

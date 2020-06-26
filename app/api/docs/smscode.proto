@@ -14,7 +14,7 @@ message SendSmsResponse {
 }
 
 service SmsCodeService {
-    // 发送短信验证码
+    //发送短信验证码
     rpc SendSmsCode (SendSmsRequest) returns (SendSmsResponse) {
         option (google.api.http) = {
             post: "/api/v1/smscode"

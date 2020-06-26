@@ -1,20 +1,20 @@
 syntax = "proto3";
 
-package goods;
+package apidocs;
 
 import "google/api/annotations.proto";
 
-option go_package = "../goods";
+option go_package = "../apidocs";
 
 service GoodsService {
-    // 生鲜模块首页商品分类、轮播图、促销商品展示
+    //生鲜模块首页商品分类、轮播图、促销商品展示
     rpc FreshGoodsIndex (FreshGoodsIndexRequest) returns (FreshGoodsIndexResponse) {
         option (google.api.http) = {
             get: "/api/v1/goods/freshGoodsIndex"
         };
     }
 
-    // 获取商品详情
+    //获取商品详情
     rpc GetGoodsDetail (GoodsDetailRequest) returns (GoodsDetailResponse) {
         option (google.api.http) = {
             get: "/api/v1/goods/goodsDetail/{goods_sku_id}"

@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "customer.proto",
+    "title": "goods.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -13,6 +13,7 @@
   "paths": {
     "/api/v1/goods/freshGoodsIndex": {
       "get": {
+        "summary": "生鲜模块首页商品分类、轮播图、促销商品展示",
         "operationId": "GoodsService_FreshGoodsIndex",
         "responses": {
           "200": {
@@ -35,6 +36,7 @@
     },
     "/api/v1/goods/goodsDetail/{goods_sku_id}": {
       "get": {
+        "summary": "获取商品详情",
         "operationId": "GoodsService_GetGoodsDetail",
         "responses": {
           "200": {
@@ -63,148 +65,9 @@
           "GoodsService"
         ]
       }
-    },
-    "/api/v1/smscode": {
-      "post": {
-        "operationId": "SmsCodeService_SendSmsCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsSendSmsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsSendSmsRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SmsCodeService"
-        ]
-      }
-    },
-    "/api/v1/user/checkMobile": {
-      "post": {
-        "summary": "检查手机号码是否已注册",
-        "operationId": "CheckMobileService_CheckMobile",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsCheckMobileRequest"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsCheckMobileRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CheckMobileService"
-        ]
-      }
-    },
-    "/api/v1/user/login": {
-      "post": {
-        "summary": "用户登录",
-        "operationId": "CustomerService_Login",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsLoginResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsLoginRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerService"
-        ]
-      }
-    },
-    "/api/v1/user/register": {
-      "post": {
-        "summary": "用户注册",
-        "operationId": "CustomerService_Register",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsRegisterResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsRegisterRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerService"
-        ]
-      }
     }
   },
   "definitions": {
-    "apidocsCheckMobileRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        }
-      }
-    },
     "apidocsFreshGoodsIndexResponse": {
       "type": "object",
       "properties": {
@@ -417,53 +280,6 @@
           }
         }
       }
-    },
-    "apidocsLoginRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        },
-        "passwd": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsLoginResponse": {
-      "type": "object",
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsRegisterRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        },
-        "passwd": {
-          "type": "string"
-        },
-        "smscode": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsRegisterResponse": {
-      "type": "object"
-    },
-    "apidocsSendSmsRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsSendSmsResponse": {
-      "type": "object"
     },
     "protobufAny": {
       "type": "object",

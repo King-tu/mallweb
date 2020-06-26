@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "customer.proto",
+    "title": "goods.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -13,12 +13,13 @@
   "paths": {
     "/api/v1/goods/freshGoodsIndex": {
       "get": {
+        "summary": "生鲜模块首页商品分类、轮播图、促销商品展示",
         "operationId": "GoodsService_FreshGoodsIndex",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apidocsFreshGoodsIndexResponse"
+              "$ref": "#/definitions/goodsFreshGoodsIndexResponse"
             }
           },
           "default": {
@@ -35,12 +36,13 @@
     },
     "/api/v1/goods/goodsDetail/{goods_sku_id}": {
       "get": {
+        "summary": "获取商品详情",
         "operationId": "GoodsService_GetGoodsDetail",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apidocsGoodsDetailResponse"
+              "$ref": "#/definitions/goodsGoodsDetailResponse"
             }
           },
           "default": {
@@ -63,178 +65,39 @@
           "GoodsService"
         ]
       }
-    },
-    "/api/v1/smscode": {
-      "post": {
-        "operationId": "SmsCodeService_SendSmsCode",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsSendSmsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsSendSmsRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SmsCodeService"
-        ]
-      }
-    },
-    "/api/v1/user/checkMobile": {
-      "post": {
-        "summary": "检查手机号码是否已注册",
-        "operationId": "CheckMobileService_CheckMobile",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsCheckMobileRequest"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsCheckMobileRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CheckMobileService"
-        ]
-      }
-    },
-    "/api/v1/user/login": {
-      "post": {
-        "summary": "用户登录",
-        "operationId": "CustomerService_Login",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsLoginResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsLoginRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerService"
-        ]
-      }
-    },
-    "/api/v1/user/register": {
-      "post": {
-        "summary": "用户注册",
-        "operationId": "CustomerService_Register",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apidocsRegisterResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apidocsRegisterRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerService"
-        ]
-      }
     }
   },
   "definitions": {
-    "apidocsCheckMobileRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsFreshGoodsIndexResponse": {
+    "goodsFreshGoodsIndexResponse": {
       "type": "object",
       "properties": {
         "goods_types": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apidocsGoodsType"
+            "$ref": "#/definitions/goodsGoodsType"
           }
         },
         "index_goods_banners": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apidocsIndexGoodsBanner"
+            "$ref": "#/definitions/goodsIndexGoodsBanner"
           }
         },
         "index_promotion_banners": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apidocsIndexPromotionBanner"
+            "$ref": "#/definitions/goodsIndexPromotionBanner"
           }
         },
         "goods_maps": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/apidocsIndexTypeGoodsBanners"
+            "$ref": "#/definitions/goodsIndexTypeGoodsBanners"
           }
         }
       }
     },
-    "apidocsGoods": {
+    "goodsGoods": {
       "type": "object",
       "properties": {
         "Id": {
@@ -250,23 +113,23 @@
       },
       "title": "商品SPU"
     },
-    "apidocsGoodsDetailResponse": {
+    "goodsGoodsDetailResponse": {
       "type": "object",
       "properties": {
         "goods_sku": {
-          "$ref": "#/definitions/apidocsGoodsSku",
+          "$ref": "#/definitions/goodsGoodsSku",
           "title": "商品详情"
         },
         "goods_skus": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apidocsGoodsSku"
+            "$ref": "#/definitions/goodsGoodsSku"
           },
           "title": "新品推荐"
         }
       }
     },
-    "apidocsGoodsSku": {
+    "goodsGoodsSku": {
       "type": "object",
       "properties": {
         "Id": {
@@ -313,12 +176,12 @@
           "type": "string"
         },
         "Goods": {
-          "$ref": "#/definitions/apidocsGoods"
+          "$ref": "#/definitions/goodsGoods"
         }
       },
       "title": "商品详情页"
     },
-    "apidocsGoodsType": {
+    "goodsGoodsType": {
       "type": "object",
       "properties": {
         "Id": {
@@ -337,7 +200,7 @@
       },
       "title": "商品分类"
     },
-    "apidocsIndexGoodsBanner": {
+    "goodsIndexGoodsBanner": {
       "type": "object",
       "properties": {
         "Id": {
@@ -358,7 +221,7 @@
       },
       "title": "轮播图"
     },
-    "apidocsIndexPromotionBanner": {
+    "goodsIndexPromotionBanner": {
       "type": "object",
       "properties": {
         "Id": {
@@ -381,7 +244,7 @@
       },
       "title": "促销商品展示"
     },
-    "apidocsIndexTypeGoodsBanner": {
+    "goodsIndexTypeGoodsBanner": {
       "type": "object",
       "properties": {
         "Id": {
@@ -407,63 +270,16 @@
       },
       "title": "首页分类商品展示表"
     },
-    "apidocsIndexTypeGoodsBanners": {
+    "goodsIndexTypeGoodsBanners": {
       "type": "object",
       "properties": {
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apidocsIndexTypeGoodsBanner"
+            "$ref": "#/definitions/goodsIndexTypeGoodsBanner"
           }
         }
       }
-    },
-    "apidocsLoginRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        },
-        "passwd": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsLoginResponse": {
-      "type": "object",
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsRegisterRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        },
-        "passwd": {
-          "type": "string"
-        },
-        "smscode": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsRegisterResponse": {
-      "type": "object"
-    },
-    "apidocsSendSmsRequest": {
-      "type": "object",
-      "properties": {
-        "mobile": {
-          "type": "string"
-        }
-      }
-    },
-    "apidocsSendSmsResponse": {
-      "type": "object"
     },
     "protobufAny": {
       "type": "object",

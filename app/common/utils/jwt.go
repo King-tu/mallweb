@@ -4,12 +4,12 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/king-tu/mallweb/app/common"
 	"github.com/king-tu/mallweb/app/global"
-	"github.com/king-tu/mallweb/app/models"
+	"github.com/king-tu/mallweb/app/model"
 	"go.uber.org/zap"
 	"time"
 )
 
-func GenerateToken(user *models.User, expiresTime int, secrect string) (string, error) {
+func GenerateToken(user *model.User, expiresTime int, secrect string) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(time.Hour * time.Duration(expiresTime))
 

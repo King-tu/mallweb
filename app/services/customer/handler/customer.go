@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/king-tu/mallweb/app/common/utils"
 	"github.com/king-tu/mallweb/app/global"
-	"github.com/king-tu/mallweb/app/models"
+	"github.com/king-tu/mallweb/app/model"
 	"github.com/king-tu/mallweb/app/services/customer/proto/customer"
 	"go.uber.org/zap"
 )
@@ -23,12 +23,12 @@ func (e *CustomerService) Register(ctx context.Context, req *customer.RegisterRe
 		return err
 	}
 
-	user := new(models.User)
+	user := new(model.User)
 	// 手机号作为用户名
 	user.Name = req.Mobile
 	user.PassWord = hashPwd
 
-	if err := user.Add(); err != nil {
+	if err := global.DB.Create(user).Error; err != nil {
 		global.Logger.For(ctx).Error(true, "添加用户失败", zap.Error(err))
 		return err
 	}
@@ -39,10 +39,10 @@ func (e *CustomerService) Register(ctx context.Context, req *customer.RegisterRe
 }
 
 func (e *CustomerService) Login(ctx context.Context, req *customer.LoginRequest, resp *customer.LoginResponse) error {
-	user := new(models.User)
+	user := new(model.User)
 	user.Name = req.Mobile
 
-	if err := user.Get(); err != nil {
+	if err := global.DB.Where("name = ?", user.Name).First(user).Error; err != nil {
 		global.Logger.For(ctx).Error(true, "获取用户失败", zap.Error(err))
 		return err
 	}

@@ -7,7 +7,7 @@ import "google/api/annotations.proto";
 option go_package = "../apidocs";
 
 service CustomerService {
-    // 用户注册
+    //用户注册
     rpc Register (RegisterRequest) returns (RegisterResponse) {
         option (google.api.http) = {
             post: "/api/v1/user/register"
@@ -15,7 +15,7 @@ service CustomerService {
         };
     }
 
-    // 用户登录
+    //用户登录
     rpc Login (LoginRequest) returns (LoginResponse) {
         option (google.api.http) = {
             post: "/api/v1/user/login"
@@ -25,7 +25,7 @@ service CustomerService {
 }
 
 service CheckMobileService {
-    // 检查手机号码是否已注册
+    //检查手机号码是否已注册
     rpc CheckMobile (CheckMobileRequest) returns (CheckMobileRequest) {
         option (google.api.http) = {
             post: "/api/v1/user/checkMobile"

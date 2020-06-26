@@ -5,7 +5,7 @@ import (
 	"github.com/king-tu/mallweb/app/common/utils"
 	"github.com/king-tu/mallweb/app/global"
 	"github.com/king-tu/mallweb/app/services/customer/handler"
-	. "github.com/king-tu/mallweb/app/services/customer/proto/customer"
+	"github.com/king-tu/mallweb/app/services/customer/proto/customer"
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 )
@@ -30,7 +30,7 @@ func main() {
 	customerSrv.Init()
 
 	// Register Handler
-	if err := RegisterCustomerServiceHandler(customerSrv.Server(), handler.NewCustomerService()); err != nil {
+	if err := customer.RegisterCustomerServiceHandler(customerSrv.Server(), handler.NewCustomerService()); err != nil {
 		global.Logger.Bg().Error(false, "Fail to run  register SmsCodeService", zap.Error(err))
 	}
 
