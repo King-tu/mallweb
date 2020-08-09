@@ -64,6 +64,43 @@
         ]
       }
     },
+    "/api/v1/goods/searchGoods": {
+      "get": {
+        "operationId": "GoodsService_SearchGoods",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apidocsSearchGoodsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "goods_name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "排序方式.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "GoodsService"
+        ]
+      }
+    },
     "/api/v1/smscode": {
       "post": {
         "operationId": "SmsCodeService_SendSmsCode",
@@ -453,6 +490,18 @@
     },
     "apidocsRegisterResponse": {
       "type": "object"
+    },
+    "apidocsSearchGoodsResponse": {
+      "type": "object",
+      "properties": {
+        "goods_skus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apidocsGoodsSku"
+          }
+        }
+      },
+      "title": "搜索商品"
     },
     "apidocsSendSmsRequest": {
       "type": "object",

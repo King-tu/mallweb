@@ -16,6 +16,21 @@ services:
     networks:
       - backend
 
+  mysql-slave:
+    image: mysql:5.7
+    container_name: mysql-slave
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - "mysql_slave_data:/var/lib/mysql"
+    networks:
+      - backend
+
   redis:
     image: redis
     container_name: redis
@@ -76,6 +91,7 @@ services:
 volumes:
   redis_data:
   mysql_data:
+  mysql_slave_data:
   fastdfs_data:
   etcd_data:
 

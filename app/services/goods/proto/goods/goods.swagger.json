@@ -65,6 +65,44 @@
           "GoodsService"
         ]
       }
+    },
+    "/api/v1/goods/searchGoods": {
+      "get": {
+        "summary": "搜索商品",
+        "operationId": "GoodsService_SearchGoods",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/goodsSearchGoodsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "goods_name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "排序方式.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "GoodsService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -280,6 +318,18 @@
           }
         }
       }
+    },
+    "goodsSearchGoodsResponse": {
+      "type": "object",
+      "properties": {
+        "goods_skus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/goodsGoodsSku"
+          }
+        }
+      },
+      "title": "搜索商品"
     },
     "protobufAny": {
       "type": "object",

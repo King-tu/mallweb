@@ -50,6 +50,12 @@ func NewGoodsServiceEndpoints() []*api.Endpoint {
 			Method:  []string{"GET"},
 			Handler: "rpc",
 		},
+		&api.Endpoint{
+			Name:    "GoodsService.SearchGoods",
+			Path:    []string{"/api/v1/goods/searchGoods"},
+			Method:  []string{"GET"},
+			Handler: "rpc",
+		},
 	}
 }
 
@@ -60,6 +66,8 @@ type GoodsService interface {
 	FreshGoodsIndex(ctx context.Context, in *FreshGoodsIndexRequest, opts ...client.CallOption) (*FreshGoodsIndexResponse, error)
 	// 获取商品详情
 	GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, opts ...client.CallOption) (*GoodsDetailResponse, error)
+	// 搜索商品
+	SearchGoods(ctx context.Context, in *SearchGoodsRequest, opts ...client.CallOption) (*SearchGoodsResponse, error)
 }
 
 type goodsService struct {
@@ -94,6 +102,16 @@ func (c *goodsService) GetGoodsDetail(ctx context.Context, in *GoodsDetailReques
 	return out, nil
 }
 
+func (c *goodsService) SearchGoods(ctx context.Context, in *SearchGoodsRequest, opts ...client.CallOption) (*SearchGoodsResponse, error) {
+	req := c.c.NewRequest(c.name, "GoodsService.SearchGoods", in)
+	out := new(SearchGoodsResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for GoodsService service
 
 type GoodsServiceHandler interface {
@@ -101,12 +119,15 @@ type GoodsServiceHandler interface {
 	FreshGoodsIndex(context.Context, *FreshGoodsIndexRequest, *FreshGoodsIndexResponse) error
 	// 获取商品详情
 	GetGoodsDetail(context.Context, *GoodsDetailRequest, *GoodsDetailResponse) error
+	// 搜索商品
+	SearchGoods(context.Context, *SearchGoodsRequest, *SearchGoodsResponse) error
 }
 
 func RegisterGoodsServiceHandler(s server.Server, hdlr GoodsServiceHandler, opts ...server.HandlerOption) error {
 	type goodsService interface {
 		FreshGoodsIndex(ctx context.Context, in *FreshGoodsIndexRequest, out *FreshGoodsIndexResponse) error
 		GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, out *GoodsDetailResponse) error
+		SearchGoods(ctx context.Context, in *SearchGoodsRequest, out *SearchGoodsResponse) error
 	}
 	type GoodsService struct {
 		goodsService
@@ -124,6 +145,12 @@ func RegisterGoodsServiceHandler(s server.Server, hdlr GoodsServiceHandler, opts
 		Method:  []string{"GET"},
 		Handler: "rpc",
 	}))
+	opts = append(opts, api.WithEndpoint(&api.Endpoint{
+		Name:    "GoodsService.SearchGoods",
+		Path:    []string{"/api/v1/goods/searchGoods"},
+		Method:  []string{"GET"},
+		Handler: "rpc",
+	}))
 	return s.Handle(s.NewHandler(&GoodsService{h}, opts...))
 }
 
@@ -137,4 +164,8 @@ func (h *goodsServiceHandler) FreshGoodsIndex(ctx context.Context, in *FreshGood
 
 func (h *goodsServiceHandler) GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, out *GoodsDetailResponse) error {
 	return h.GoodsServiceHandler.GetGoodsDetail(ctx, in, out)
+}
+
+func (h *goodsServiceHandler) SearchGoods(ctx context.Context, in *SearchGoodsRequest, out *SearchGoodsResponse) error {
+	return h.GoodsServiceHandler.SearchGoods(ctx, in, out)
 }

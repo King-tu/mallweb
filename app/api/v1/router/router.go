@@ -40,6 +40,7 @@ func InitRouter() *gin.Engine {
 		{
 			g.GET("freshGoodsIndex", handler.GetFreshGoodsIndex)
 			g.GET("goodsDetail/:id", handler.GetGoodsDetail)
+			g.GET("searchGoods", handler.SearchGoods)
 		}
 	}
 

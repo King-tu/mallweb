@@ -5,6 +5,7 @@ type App struct {
 	Mysql     Mysql     `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
 	Redis     Redis     `mapstructure:"redis" json:"redis" yaml:"redis"`
 	ETCD      ETCD      `mapstructure:"etcd" json:"etcd" yaml:"etcd"`
+	Elastic   Elastic   `mapstructure:"elastic" json:"elastic" yaml:"elastic"`
 	Jaeger    Jaeger    `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`
 	Log       Log       `mapstructure:"log" json:"log" yaml:"log"`
 	JWT       JWT       `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
@@ -43,6 +44,13 @@ type ETCD struct {
 	RegisterTTL int `mapstructure:"register_ttl" json:"register_ttl" yaml:"register_ttl"`
 	// 定时向注册中心重新注册以保证服务仍在线
 	RegisterInterval int `mapstructure:"register_interval" json:"register_interval" yaml:"register_interval"`
+}
+
+// es
+type Elastic struct {
+	Addr     string `mapstructure:"addr" json:"addr" yaml:"addr"`
+	UserName string `mapstructure:"user_name" json:"user_name" yaml:"user_name"`
+	Password string `mapstructure:"password" json:"password" yaml:"password"`
 }
 
 type Jaeger struct {

@@ -20,6 +20,13 @@ service GoodsService {
             get: "/api/v1/goods/goodsDetail/{goods_sku_id}"
         };
     }
+
+    // 搜索商品
+    rpc SearchGoods (SearchGoodsRequest) returns (SearchGoodsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/goods/searchGoods"
+        };
+    }
 }
 
 // 全部商品分类、轮播图、促销商品展示
@@ -31,6 +38,17 @@ message FreshGoodsIndexResponse {
     repeated IndexGoodsBanner index_goods_banners = 2;
     repeated IndexPromotionBanner index_promotion_banners = 3;
     map<string, IndexTypeGoodsBanners> goods_maps = 4;
+}
+
+// 搜索商品
+message SearchGoodsRequest {
+    string goods_name = 1;
+    // 排序方式
+    string sort = 2;
+}
+// 搜索商品
+message SearchGoodsResponse {
+    repeated GoodsSku goods_skus = 1;
 }
 
 // 商品详情

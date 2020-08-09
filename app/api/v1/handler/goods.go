@@ -12,6 +12,7 @@ import (
 	"strconv"
 )
 
+// 获取商品首页商品分类列表、轮播图、促销商品
 func GetFreshGoodsIndex(c *gin.Context) {
 	ctx, ok := middlewares.ContextWithSpan(c)
 	if ok == false {
@@ -31,6 +32,7 @@ func GetFreshGoodsIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// 获取商品详情
 func GetGoodsDetail(c *gin.Context) {
 	ctx, ok := middlewares.ContextWithSpan(c)
 	if ok == false {
@@ -46,6 +48,33 @@ func GetGoodsDetail(c *gin.Context) {
 	if err != nil {
 		e := errors.ConvertFrom(err)
 		global.Logger.Bg().Error(false, "GetGoodsDetail 服务调用出错", zap.String("error", e.Detail))
+		utils.AbortWithError(c, e)
+		return
+	}
+
+	// Return the normal response
+	c.JSON(http.StatusOK, resp)
+}
+
+// 搜索商品
+func SearchGoods(c *gin.Context) {
+	goodsName := c.Query("goodsName")
+	sort := c.Query("sort")
+
+	req := goods.SearchGoodsRequest{
+		GoodsName: goodsName,
+		Sort:      sort,
+	}
+
+	ctx, ok := middlewares.ContextWithSpan(c)
+	if ok == false {
+		global.Logger.Bg().Debug("get context err")
+	}
+
+	resp, err := goodsServiceClient.SearchGoods(ctx, &req)
+	if err != nil {
+		e := errors.ConvertFrom(err)
+		global.Logger.Bg().Error(false, "SearchGoods 服务调用出错", zap.String("error", e.Detail))
 		utils.AbortWithError(c, e)
 		return
 	}
