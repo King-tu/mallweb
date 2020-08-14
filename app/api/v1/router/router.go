@@ -6,6 +6,7 @@ import (
 	"github.com/king-tu/mallweb/app/api/v1/handler"
 	"github.com/king-tu/mallweb/app/common/middlewares"
 	"go.uber.org/zap"
+	"net/http"
 	"time"
 )
 
@@ -16,8 +17,14 @@ func InitRouter() *gin.Engine {
 	engine.Use(ginzap.RecoveryWithZap(zap.L(), true))
 
 	v1 := engine.Group("/api/v1")
+	v1.Use(middlewares.RateLimiter)
 	v1.Use(middlewares.TracerWrapper)
 	{
+		// test
+		v1.GET("/", func(c *gin.Context) {
+			c.JSON(http.StatusOK, "OK!!!\n")
+		})
+
 		/******* 短信服务 *******/
 		// 短信验证码
 		v1.POST("/smscode", handler.SendSmsCode)

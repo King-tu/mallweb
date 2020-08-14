@@ -38,6 +38,7 @@ require (
 	golang.org/x/crypto v0.0.0-20200510223506-06a226fb4e37
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7 // indirect
 	golang.org/x/sys v0.0.0-20200519105757-fe76b779f299 // indirect
+	golang.org/x/time v0.0.0-20191024005414-555d28b269f0
 	google.golang.org/genproto v0.0.0-20200519141106-08726f379972
 	google.golang.org/grpc v1.29.1 // indirect
 	google.golang.org/protobuf v1.23.0
